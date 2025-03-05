@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 03/04/2025 11:11:23 AM
+-- Create Date: 02/25/2025 03:47:04 PM
 -- Design Name: 
--- Module Name: sevenseg_decoder_tb - Behavioral
+-- Module Name: sevenseg_decoder - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -17,91 +17,44 @@
 -- Additional Comments:
 -- 
 ----------------------------------------------------------------------------------
-
-
+ 
+ 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+ 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
-
+ 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
 --library UNISIM;
 --use UNISIM.VComponents.all;
-
-entity sevenseg_decoder_tb is
+ 
+entity sevenseg_decoder is
     Port ( i_Hex : in STD_LOGIC_VECTOR (3 downto 0);
            o_seg_n : out STD_LOGIC_VECTOR (6 downto 0));
-end sevenseg_decoder_tb;
-
-architecture Behavioral of sevenseg_decoder_tb is
-
-
-component sevenseg_decoder is 
-        Port ( i_Hex : in STD_LOGIC_VECTOR (3 downto 0);
-               o_seg_n : out STD_LOGIC_VECTOR (6 downto 0));
-    end component sevenseg_decoder;
-    signal w_7SD_EN_n : std_logic;
-    signal w_addends     : std_logic_vector(3 downto 0) :=; -- the numbers being added
-	signal w_o_seg_n     : std_logic;
+end sevenseg_decoder;
+ 
+architecture Behavioral of sevenseg_decoder is
 begin
-    sevenseg_decoder1 : sevenseg_decoder port map(
-        i_Hex => w_addends(3 downto 0),
-        o_seg_n => w_o_seg_n
-    );
-    test_process : process
-    begin
-        --|Test0
-        w_addends <= "0000"; wait for 10 ns;
-        assert(w_seg_n = "0000001") report "bad with zero" severity failure;
-        --|Test1
-        w_addends <= "0001"; wait for 10 ns;
-        assert(w_seg_n = "1001111") report "bad with one" severity failure;
-        --|Test2
-        w_addends <= "0010"; wait for 10 ns;
-        assert(w_seg_n = "0010010") report "bad with two" severity failure;
-        --|Test3
-        w_addends <= "0011"; wait for 10 ns;
-        assert(w_seg_n = "0000110") report "bad with three" severity failure;
-        --|Test4
-        w_addends <= "0100"; wait for 10 ns;
-        assert(w_seg_n = "1001100") report "bad with four" severity failure;
-        --|Test5
-        w_addends <= "0101"; wait for 10 ns;
-        assert(w_seg_n = "0100100") report "bad with five" severity failure;
-        --|Test6
-        w_addends <= "0110"; wait for 10 ns;
-        assert(w_seg_n = "0100000") report "bad with six" severity failure;
-        --|Test7
-        w_addends <= "0111"; wait for 10 ns;
-        assert(w_seg_n = "0001111") report "bad with seven" severity failure;
-        --|Test8
-        w_addends <= "1000"; wait for 10 ns;
-        assert(w_seg_n = "0000000") report "bad with eight" severity failure;
-        --|Test9
-        w_addends <= "1001"; wait for 10 ns;
-        assert(w_seg_n = "0000100") report "bad with nine" severity failure;
-        --|TestA
-        w_addends <= "1010"; wait for 10 ns;
-        assert(w_seg_n = "0001000") report "bad with A" severity failure;
-        --|TestB
-        w_addends <= "1011"; wait for 10 ns;
-        assert(w_seg_n = "1100000") report "bad with B" severity failure;
-        --|TestC
-        w_addends <= "1100"; wait for 10 ns;
-        assert(w_seg_n = "0100111") report "bad with C" severity failure;
-        --|TestD
-        w_addends <= "1101"; wait for 10 ns;
-        assert(w_seg_n = "1000010") report "bad with D" severity failure;
-        --|TestE
-        w_addends <= "1110"; wait for 10 ns;
-        assert(w_seg_n = "0110000") report "bad with E" severity failure;
-        --|TestF
-        w_addends <= "1111"; wait for 10 ns;
-        assert(w_seg_n = "0111000") report "bad with F" severity failure;
-            wait;
-       end process;
+    with i_Hex select
+        o_seg_n <= "1000000" when  "0000",
+                   "1111001" when  "0001",
+                   "0100100" when  "0010",
+                   "0110000" when  "0011",
+                   "0011001" when  "0100",
+                   "0010010" when  "0101",
+                   "0000010" when  "0110",
+                   "1111000" when  "0111",
+                   "0000000" when  "1000",
+                   "0011000" when  "1001",
+                   "0001000" when  "1010",
+                   "0000011" when  "1011",
+                   "0100111" when  "1100",
+                   "0100001" when  "1101",
+                   "0000110" when  "1110",
+                   "0001110" when  "1111",
+                   "1000000" when others;
  
 end Behavioral;
